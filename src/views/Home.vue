@@ -26,6 +26,9 @@
                 <!--导航菜单-->
                 <el-menu :default-active="$route.path" class="el-menu-vertical-demo" @open="handleopen"
                          @close="handleclose" @select="handleselect"
+                         background-color="#545c64"
+                         text-color="#fff"
+                         active-text-color="#ffd04b"
                          unique-opened router v-show="!collapsed">
                     <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
                         <el-submenu :index="index+''" v-if="!item.leaf">
@@ -62,19 +65,19 @@
                                      @click="$router.push(item.children[0].path)"><i :class="item.iconCls"></i></div>
                             </li>
                         </template>
-</li>
-</ul>
-</aside>
+                    </li>
+                </ul>
+            </aside>
 <section class="content-container">
     <div class="grid-content bg-purple-light">
-        <el-col :span="24" class="breadcrumb-container">
-            <strong class="title">{{$route.name}}</strong>
-            <el-breadcrumb separator="/" class="breadcrumb-inner">
-                <el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
-                    {{ item.name }}
-                </el-breadcrumb-item>
-            </el-breadcrumb>
-        </el-col>
+        <!--<el-col :span="24" class="breadcrumb-container">-->
+            <!--<strong class="title">{{$route.name}}</strong>-->
+            <!--<el-breadcrumb separator="/" class="breadcrumb-inner">-->
+                <!--<el-breadcrumb-item v-for="item in $route.matched" :key="item.path">-->
+                    <!--{{ item.name }}-->
+                <!--</el-breadcrumb-item>-->
+            <!--</el-breadcrumb>-->
+        <!--</el-col>-->
         <el-col :span="24" class="content-wrapper">
             <transition name="fade" mode="out-in">
                 <router-view></router-view>
@@ -87,10 +90,12 @@
 </template>
 
 <script>
+    import { requestLogOut} from '../api/api';
+
     export default {
         data() {
             return {
-                sysName: 'VUEADMIN',
+                sysName: '霍邱后台管理系统',
                 collapsed: false,
                 sysUserName: '',
                 sysUserAvatar: '',
@@ -124,8 +129,10 @@
                 this.$confirm('确认退出吗?', '提示', {
                     //type: 'warning'
                 }).then(() => {
-                    sessionStorage.removeItem('user');
-                    _this.$router.push('/login');
+                    requestLogOut().then(resp => {
+                        sessionStorage.removeItem('user');
+                        _this.$router.push('/login');
+                    });
                 }).catch(() => {
 
                 });
@@ -144,8 +151,8 @@
             var user = sessionStorage.getItem('user');
             if (user) {
                 user = JSON.parse(user);
-                this.sysUserName = user.name || '';
-                this.sysUserAvatar = user.avatar || '';
+                this.sysUserName = user.username || '';
+                this.sysUserAvatar = user.avatar || 'https://raw.githubusercontent.com/taylorchen709/markdown-images/master/vueadmin/user.png';
             }
 
         }
@@ -155,6 +162,10 @@
 
 <style scoped lang="scss">
     @import '~scss_vars';
+
+    .el-submenu .el-menu-item{
+        min-width: 0;
+    }
 
     .container {
         position: absolute;
@@ -270,17 +281,6 @@
                 // left: 230px;
                 overflow-y: scroll;
                 padding: 20px;
-                .breadcrumb-container {
-                    //margin-bottom: 15px;
-                    .title {
-                        width: 200px;
-                        float: left;
-                        color: #475669;
-                    }
-                    .breadcrumb-inner {
-                        float: right;
-                    }
-                }
                 .content-wrapper {
                     background-color: #fff;
                     box-sizing: border-box;

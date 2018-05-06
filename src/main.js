@@ -11,8 +11,10 @@ import Vuex from 'vuex'
 //import 'nprogress/nprogress.css'
 import routes from './routes'
 import Mock from './mock'
-//Mock.bootstrap();
+// Mock.bootstrap();
 import 'font-awesome/css/font-awesome.min.css'
+
+
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
@@ -30,7 +32,7 @@ router.beforeEach((to, from, next) => {
     sessionStorage.removeItem('user');
   }
   let user = JSON.parse(sessionStorage.getItem('user'));
-  if (!user && to.path != '/login') {
+  if (!user && to.path != '/login' && to.path != '/regist') {
     next({ path: '/login' })
   } else {
     next()
