@@ -101,7 +101,6 @@
                 //NProgress.start();
 
                 getCategoryKindList(para).then((res) => {
-                    console.log(2,para, res);
                     this.infoList = res.data.data.list;
                     this.infoObj = res.data.data;
                     [...this.allList] = this.infoList;
@@ -123,7 +122,6 @@
                             let para = Object.assign({}, this.editForm);
                             para.type = this.infoObj.type;
                             para.role = this.infoObj.role;
-                            console.log(para);
                             editMenu(para).then((res) => {
                                 this.editLoading = false;
                                 //NProgress.done();

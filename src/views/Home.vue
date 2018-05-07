@@ -14,8 +14,7 @@
                     <span class="el-dropdown-link userinfo-inner"><img
                             :src="this.sysUserAvatar"/> {{sysUserName}}</span>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>我的消息</el-dropdown-item>
-                        <el-dropdown-item>设置</el-dropdown-item>
+                        <el-dropdown-item @click.native="handleEdit">修改密码</el-dropdown-item>
                         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -84,22 +83,45 @@
             </transition>
         </el-col>
     </div>
+
+
+    <!--编辑界面-->
+    <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
+        <el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+            <el-form-item label="用户名" prop="username">
+                <el-input v-model="editForm.username" readonly></el-input>
+            </el-form-item>
+            <el-form-item label="新密码" prop="password">
+                <el-input type="password" v-model="editForm.password" placeholder="请输入新密码"></el-input>
+            </el-form-item>
+            <el-form-item label="再次输入新密码" prop="password2">
+                <el-input type="password" v-model="editForm.password2"  placeholder="请再次输入新密码"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click.native="editFormVisible = false">取消</el-button>
+            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+        </div>
+    </el-dialog>
+
 </section>
 </el-col>
 </el-row>
 </template>
 
 <script>
-    import { requestLogOut} from '../api/api';
+    import { requestLogOut, editPwd} from '../api/api';
 
     export default {
         data() {
             return {
+                editFormVisible: false,//编辑界面是否显示
                 sysName: '霍邱后台管理系统',
                 collapsed: false,
                 sysUserName: '',
                 sysUserAvatar: '',
                 sysUserAuth: '',
+                user: {},
                 form: {
                     name: '',
                     region: '',
@@ -109,10 +131,65 @@
                     type: [],
                     resource: '',
                     desc: ''
-                }
+                },
+                editFormRules: {
+                    username: [
+                        { required: true, message: '请输入用户名', trigger: 'blur' }
+                    ],
+                    password: [
+                        { required: true, message: '请输入新密码', trigger: 'blur' }
+                    ],
+                    password2: [
+                        { required: true, message: '请再次输入密码', trigger: 'blur' }
+                    ]
+                },
+                //编辑界面数据
+                editForm: {
+                    username : '',
+                    password: '',
+                    password2: ''
+                },
+                editLoading: false
             }
         },
         methods: {
+            //显示编辑界面
+            handleEdit: function () {
+                this.editFormVisible = true;
+                this.editForm.password = '';
+                this.editForm.password2 = '';
+            },
+            editSubmit(){
+                this.$refs.editForm.validate((valid) => {
+                    if (valid) {
+                        let p1 = this.editForm.password.trim();
+                        let p2 = this.editForm.password2.trim();
+                        if (!p1 || !p2 || p1 !== p2) {
+                            this.$message({
+                                message: '两次密码输入不一致吗，请检查！',
+                                type: 'error'
+                            });
+                            return;
+                        }
+
+                        this.$confirm('您确认修改密码吗？', '提示', {}).then(() => {
+                            this.editLoading = true;
+                            //NProgress.start();
+                            let para = Object.assign({}, this.editForm);
+                            para.id = this.user.id;
+                            editPwd(para).then((res) => {
+                                this.editLoading = false;
+                                //NProgress.done();
+                                this.$message({
+                                    message: '提交成功',
+                                    type: 'success'
+                                });
+                                this.editFormVisible = false;
+                            });
+                        });
+                    }
+                });
+            },
             onSubmit() {
                 console.log('submit!');
             },
@@ -152,7 +229,9 @@
             var user = sessionStorage.getItem('user');
             if (user) {
                 user = JSON.parse(user);
+                this.user = user;
                 this.sysUserName = user.username || '';
+                this.editForm.username = user.username || '';
                 this.sysUserAuth = user.roleId || '';
                 this.sysUserAvatar = user.avatar || 'https://raw.githubusercontent.com/taylorchen709/markdown-images/master/vueadmin/user.png';
             }

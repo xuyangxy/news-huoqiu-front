@@ -41,6 +41,8 @@ export const urlList = params => { return axios.get(`${base}/urlList`, { params:
 
 
 
+export const editPwd = params => { return axios.post(`${base}/editPwd3`, qs.stringify(params)); };
+export const getSessionUser = params => { return axios.get(`${base}/getSessionUser`, { params: params }); };
 
 
 

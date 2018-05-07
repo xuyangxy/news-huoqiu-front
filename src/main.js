@@ -13,6 +13,7 @@ import routes from './routes'
 import Mock from './mock'
 // Mock.bootstrap();
 import 'font-awesome/css/font-awesome.min.css'
+import {getSessionUser} from './api/api';
 
 
 Vue.use(ElementUI)
@@ -41,6 +42,15 @@ router.beforeEach((to, from, next) => {
         } else {
             next()
         }
+    }
+
+    if (to.path != '/login' && to.path != '/regist') {
+        getSessionUser().then(res => {
+            if (!res.data.data) {
+                sessionStorage.removeItem('user');
+                next({path: '/login'});
+            }
+        });
     }
 });
 //router.afterEach(transition => {
