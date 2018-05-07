@@ -49,8 +49,9 @@ let routes = [
         name: '',
         iconCls: 'fa fa-list-alt',
         leaf: true,//只有一个节点
+        auth: 1,
         children: [
-            { path: '/menu', component: Menu, name: '菜单维护' }
+            { path: '/menu', component: Menu, name: '菜单维护'}
         ]
     },
     {
@@ -59,8 +60,9 @@ let routes = [
         name: '',
         iconCls: 'fa fa-sitemap',
         leaf: true,//只有一个节点
+        auth: 1,
         children: [
-            { path: '/mondul', component: Mondul, name: '模块维护' }
+            { path: '/mondul', component: Mondul, name: '模块维护'}
         ]
     },
     {
@@ -69,18 +71,9 @@ let routes = [
         name: '',
         iconCls: 'fa fa-internet-explorer',
         leaf: true,//只有一个节点
+        auth: 1,
         children: [
             { path: '/web', component: Web, name: '网址维护' }
-        ]
-    },
-    {
-        path: '/',
-        component: Home,
-        name: '',
-        iconCls: 'fa fa-file-image-o',
-        leaf: true,//只有一个节点
-        children: [
-            { path: '/img', component: Img, name: '图片维护' }
         ]
     },
     {
@@ -90,7 +83,7 @@ let routes = [
         iconCls: 'fa fa-edit',
         leaf: true,//只有一个节点
         children: [
-            { path: '/newsAdd', component: NewsAdd, name: '新闻投稿' }
+            { path: '/newsAdd', component: NewsAdd, name: '新闻投稿'}
         ]
     },
     {

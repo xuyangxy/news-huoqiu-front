@@ -15,7 +15,6 @@ import Mock from './mock'
 import 'font-awesome/css/font-awesome.min.css'
 
 
-
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -23,32 +22,37 @@ Vue.use(Vuex)
 //NProgress.configure({ showSpinner: false });
 
 const router = new VueRouter({
-  routes
-})
+    routes
+});
 
+const pathAuth = ['/menu', '/mondul', '/web'];
 router.beforeEach((to, from, next) => {
-  //NProgress.start();
-  if (to.path == '/login') {
-    sessionStorage.removeItem('user');
-  }
-  let user = JSON.parse(sessionStorage.getItem('user'));
-  if (!user && to.path != '/login' && to.path != '/regist') {
-    next({ path: '/login' })
-  } else {
-    next()
-  }
-})
+    //NProgress.start();
+    if (to.path == '/login') {
+        sessionStorage.removeItem('user');
+    }
+    let user = JSON.parse(sessionStorage.getItem('user'));
 
+    if (user.roleId !== 1 && pathAuth.includes(to.path)) {
+        next({path: '/'});
+    } else {
+        if (!user && to.path != '/login' && to.path != '/regist') {
+            next({path: '/login'})
+        } else {
+            next()
+        }
+    }
+});
 //router.afterEach(transition => {
 //NProgress.done();
 //});
 
 new Vue({
-  //el: '#app',
-  //template: '<App/>',
-  router,
-  store,
-  //components: { App }
-  render: h => h(App)
+    //el: '#app',
+    //template: '<App/>',
+    router,
+    store,
+    //components: { App }
+    render: h => h(App)
 }).$mount('#app')
 
