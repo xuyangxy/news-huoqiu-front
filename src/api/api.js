@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 
-let base = 'http://localhost:8081/hqms';
+let base = 'http://123.206.29.16:9000/hqms';
 
 let fileConfig = {
     headers:{'Content-Type':'multipart/form-data'}
