@@ -33,7 +33,7 @@ router.beforeEach((to, from, next) => {
     }
     let user = JSON.parse(sessionStorage.getItem('user'));
 
-    if (user.roleId !== 1 && pathAuth.includes(to.path)) {
+    if (user && user.roleId !== 1 && pathAuth.includes(to.path)) {
         next({path: '/'});
     } else {
         if (!user && to.path != '/login' && to.path != '/regist') {
