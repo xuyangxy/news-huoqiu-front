@@ -63,7 +63,8 @@
                                     type: 'error'
                                 });
                             } else {
-                                sessionStorage.setItem('user', JSON.stringify(data));
+
+                                localStorage.setItem('user', JSON.stringify(data));
                                 this.$router.push({path: '/'});
                             }
                         });

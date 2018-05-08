@@ -208,7 +208,7 @@
                     //type: 'warning'
                 }).then(() => {
                     requestLogOut().then(resp => {
-                        sessionStorage.removeItem('user');
+                        localStorage.removeItem('user');
                         _this.$router.push('/login');
                     });
                 }).catch(() => {
@@ -226,7 +226,7 @@
             }
         },
         mounted() {
-            var user = sessionStorage.getItem('user');
+            var user = localStorage.getItem('user');
             if (user) {
                 user = JSON.parse(user);
                 this.user = user;

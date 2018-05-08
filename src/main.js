@@ -30,9 +30,9 @@ const pathAuth = ['/menu', '/mondul', '/web'];
 router.beforeEach((to, from, next) => {
     //NProgress.start();
     if (to.path == '/login') {
-        sessionStorage.removeItem('user');
+        localStorage.removeItem('user');
     }
-    let user = JSON.parse(sessionStorage.getItem('user'));
+    let user = JSON.parse(localStorage.getItem('user'));
 
     if (user && user.roleId !== 1 && pathAuth.includes(to.path)) {
         next({path: '/'});
@@ -47,7 +47,7 @@ router.beforeEach((to, from, next) => {
     if (to.path != '/login' && to.path != '/regist') {
         getSessionUser().then(res => {
             if (!res.data.data) {
-                sessionStorage.removeItem('user');
+                localStorage.removeItem('user');
                 next({path: '/login'});
             }
         });
