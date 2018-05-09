@@ -49,6 +49,11 @@ router.beforeEach((to, from, next) => {
             if (!res.data.data) {
                 localStorage.removeItem('user');
                 next({path: '/login'});
+            } else {
+                if (!localStorage.getItem('user')) {
+                    localStorage.setItem('user', JSON.stringify(res.data.data));
+                }
+
             }
         });
     }

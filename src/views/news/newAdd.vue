@@ -183,6 +183,7 @@
                                 });
                                 this.$refs.form.resetFields();
                                 this.$refs.ue.setUEContent('');
+                                this.$refs.imgRef.clearFiles();
                             });
                         });
                     } else {
