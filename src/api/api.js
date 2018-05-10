@@ -47,4 +47,7 @@ export const editPwd = params => { return axios.post(`${base}/editPwd3`, qs.stri
 export const getSessionUser = params => { return axios.get(`${base}/getSessionUser`, { params: params }); };
 
 
+export const getPhoneCode = params => { return axios.get(`${base}/getCode`, { params: params }); };
+
+
 

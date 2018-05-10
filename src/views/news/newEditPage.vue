@@ -140,15 +140,15 @@
                     author: [
                         {required: true, message: '请输入作者', trigger: 'blur'}
                     ],
-                    category: [
-                        {required: true, message: '请选择一级标题', trigger: 'change'}
-                    ],
-                    kind: [
-                        {required: true, message: '请选择二级标题', trigger: 'change'}
-                    ],
-                    modules: [
-                        {required: true, message: '请选择模块', trigger: 'change'}
-                    ],
+                    // category: [
+                    //     {required: true, message: '请选择一级标题', trigger: 'change'}
+                    // ],
+                    // kind: [
+                    //     {required: true, message: '请选择二级标题', trigger: 'change'}
+                    // ],
+                    // modules: [
+                    //     {required: true, message: '请选择模块', trigger: 'change'}
+                    // ],
                     top: [
                         {required: true, message: '请选择是否置顶', trigger: 'change'}
                     ],
@@ -180,18 +180,23 @@
                 const files = this.$refs.imgRef.uploadFiles;
                 const content = this.$refs.ue.getUEContent();
 
-                if (files.length === 0){
-                    this.$message.warning(`请上传封面图片！`);
-                    return;
-                }
-
-                if (!content || !content.trim()){
-                    this.$message.warning(`请输入新闻内容！`);
-                    return;
-                }
-
                 this.$refs.form.validate(valid => {
                     if (valid) {
+                        if (files.length === 0){
+                            this.$message.warning(`请上传封面图片！`);
+                            return;
+                        }
+
+                        if (!content || !content.trim()){
+                            this.$message.warning(`请输入新闻内容！`);
+                            return;
+                        }
+
+                        if (!this.form.kind && !this.form.modules) {
+                            this.$message.warning(`分类和板块不能同时为空，请选择！`);
+                            return;
+                        }
+
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             this.formLoading = true;
                             let param = new FormData();

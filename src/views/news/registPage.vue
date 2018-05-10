@@ -13,7 +13,8 @@
         </el-form-item>
         <el-form-item prop="code" label="验证码">
             <el-input type="text" v-model="ruleForm2.code" auto-complete="off" placeholder="验证码" style="width: 60%"></el-input>
-            <img style="float: right" :src="codeImgSrc" @click="getCodeImage"/>
+            <!--<img style="float: right" :src="codeImgSrc" @click="getCodeImage"/>-->
+            <el-button  style="width:36%;"  :disabled="btnCode" @click="getPhoneCode">{{btnText}}</el-button>
         </el-form-item>
         <el-form-item style="width:100%;">
             <el-button type="primary" style="width:60%;" @click.native.prevent="handleSubmit2" :loading="logining">确认注册
@@ -27,14 +28,16 @@
 
 <script>
 
-    import {registeredWithPhone, registeredWithMail} from '../../api/api';
+    import {getPhoneCode, registeredWithMail} from '../../api/api';
     const schema = require('async-validator');
 
     export default {
         data() {
             return {
-                codeImgSrc: 'hqms/getPicCode',
+                timer: null,
                 logining: false,
+                btnCode: false,
+                btnText: '点击获取',
                 ruleForm2: {
                     email: '',
                     code: '',
@@ -58,8 +61,56 @@
             };
         },
         methods: {
-            getCodeImage() {
-                this.codeImgSrc = "/hqms/getPicCode?flag="+Math.random();
+             startTime() {
+                let timeout = 59, timer = this.timer, _this = this;
+                if (timer) {
+                    clearInterval(timer);
+                }
+                this.btnCode = true;
+                this.btnText = '已发送(60)';
+                timer = setInterval(function () {
+                    _this.btnText = `已发送(${timeout})`;
+                    timeout--;
+                    if (timeout < 0) {
+                        _this.btnText = `点击发送`;
+                        _this.btnCode = false;
+                        clearInterval(timer);
+                    }
+                }, 1000);
+            },
+            getPhoneCode() {
+                let phone = this.ruleForm2.phone;
+                if (!phone || !phone.trim()){
+                    this.$message({
+                        message: '请输入手机号',
+                        type: 'warning'
+                    });
+                    return;
+                }
+
+                getPhoneCode({phone: phone}).then(datas => {
+                    let {msg, code, data} = datas.data;
+                    if (code !== 200) {
+                        this.$message({
+                            message: msg,
+                            type: 'error'
+                        });
+                    } else {
+                        if (data.flag) {
+                            this.$message({
+                                message: '发送成功！',
+                                type: 'success'
+                            });
+                            this.startTime();
+                        } else {
+                            this.$message({
+                                message: data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }
+                });
+
             },
             handleReset2() {
                 this.$refs.ruleForm2.resetFields();
