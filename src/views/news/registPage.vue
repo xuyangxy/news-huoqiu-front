@@ -55,7 +55,7 @@
                         {required: true, message: '请输入验证码', trigger: 'blur'},
                     ],
                     phone: [
-                        {required: true, message: '请输入手机号码', trigger: 'blur'}
+                        {required: true, message: '请输入手机号码',pattern: /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})|(19[0-9]{9})$/, trigger: 'blur'}
                     ]
                 }
             };

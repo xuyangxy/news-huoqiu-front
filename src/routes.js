@@ -6,11 +6,11 @@ import News2 from './views/news/newsApproval2.vue'
 import News3 from './views/news/newsApproval3.vue'
 import Menu from './views/news/menuManage.vue'
 import Mondul from './views/news/mondulManage.vue'
-import Img from './views/news/imgManage.vue'
 import Web from './views/news/websiteManage.vue'
 import NewsAdd from './views/news/newAdd.vue'
 import NewEditPage from './views/news/newEditPage.vue'
 import Regist from './views/news/registPage.vue'
+import UserManager from './views/news/userManager.vue'
 
 let routes = [
     {
@@ -84,6 +84,17 @@ let routes = [
         leaf: true,//只有一个节点
         children: [
             { path: '/newsAdd', component: NewsAdd, name: '新闻投稿'}
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '',
+        iconCls: 'fa fa-user-circle',
+        leaf: true,//只有一个节点
+        auth: 1,
+        children: [
+            { path: '/userManager', component: UserManager, name: '用户管理'}
         ]
     },
     {

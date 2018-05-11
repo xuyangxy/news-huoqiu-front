@@ -14,6 +14,7 @@
                     <span class="el-dropdown-link userinfo-inner"><img
                             :src="this.sysUserAvatar"/> {{sysUserName}}</span>
                     <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item @click.native="userEdit">个人信息</el-dropdown-item>
                         <el-dropdown-item @click.native="handleEdit">修改密码</el-dropdown-item>
                         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
@@ -104,18 +105,47 @@
         </div>
     </el-dialog>
 
+
+
+    <!--编辑界面-->
+    <el-dialog title="编辑个人信息" v-model="userEditFormVisible" :close-on-click-modal="false">
+        <el-form :model="userEditForm" label-width="120px" :rules="userEditFormRules" ref="userEditForm">
+            <el-form-item label="用户名" prop="username">
+                <el-input v-model="userEditForm.username" placeholder="请填写用户名"></el-input>
+            </el-form-item>
+            <el-form-item label="姓名" prop="name">
+                <el-input v-model="userEditForm.name" placeholder="请填写姓名"></el-input>
+            </el-form-item>
+            <el-form-item label="手机号" prop="phone">
+                <el-input v-model="userEditForm.phone" placeholder="请填写手机号"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱" prop="email">
+                <el-input v-model="userEditForm.email" placeholder="请填写邮箱"></el-input>
+            </el-form-item>
+            <el-form-item label="个人简介" prop="intro">
+                <el-input type="textarea" v-model="userEditForm.intro" placeholder="请填写个人简介"></el-input>
+            </el-form-item>
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click.native="userEditFormVisible = false">取消</el-button>
+            <el-button type="primary" @click.native="userEditSubmit" :loading="userEditLoading">确认修改</el-button>
+        </div>
+    </el-dialog>
+
 </section>
 </el-col>
 </el-row>
 </template>
 
 <script>
-    import { requestLogOut, editPwd} from '../api/api';
+    import { requestLogOut, editPwd, userInfo, editUser} from '../api/api';
 
     export default {
         data() {
             return {
                 editFormVisible: false,//编辑界面是否显示
+                userEditFormVisible: false,//编辑界面是否显示
                 sysName: '霍邱后台管理系统',
                 collapsed: false,
                 sysUserName: '',
@@ -143,16 +173,80 @@
                         { required: true, message: '请再次输入密码', trigger: 'blur' }
                     ]
                 },
+                userEditFormRules: {
+                    name: [
+                        { required: true, message: '请输入姓名', trigger: 'blur' }
+                    ],
+                    username: [
+                        { required: true, message: '请输入用户名', trigger: 'blur' }
+                    ],
+                    phone: [
+                        { required: true, message: '请输入正确的手机号', pattern: /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})|(19[0-9]{9})$/, trigger: 'blur' }
+                    ],
+                    email: [
+                        {required: true, message: '请输入正确邮箱格式', pattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/, trigger: 'blur'}
+                    ]
+                },
                 //编辑界面数据
                 editForm: {
                     username : '',
                     password: '',
                     password2: ''
                 },
-                editLoading: false
+                editLoading: false,
+                userEditLoading: false,
+
+                userEditForm:{
+                    intro:'',
+                    email:'',
+                    phone:'',
+                    name:'',
+                    username: ''
+                },
+                userObj : null
             }
         },
         methods: {
+            userEditSubmit(){
+                this.$refs.userEditForm.validate((valid) => {
+                    if (valid) {
+                        this.$confirm('您确认修改个人信息吗？', '提示', {}).then(() => {
+                            this.userEditLoading = true;
+                            //NProgress.start();
+                            let para = Object.assign({}, this.userEditForm);
+                            para.id = this.userObj.id;
+                            editUser(para).then((res) => {
+                                this.userEditLoading = false;
+                                //NProgress.done();
+                                this.$message({
+                                    message: '提交成功',
+                                    type: 'success'
+                                });
+                                this.userEditFormVisible = false;
+                                this.getUserInfo();
+
+                            });
+                        });
+                    }
+                });
+            },
+            userEdit(){
+                this.userEditFormVisible = true;
+                this.userEditForm = Object.assign({}, this.userObj);
+            },
+            getUserInfo(){
+                userInfo().then(res => {
+                    if (res.status === 200 && res.data.code === 200) {
+                        this.userObj = res.data.data;
+                    } else {
+                        this.$message({
+                            message: res.msg,
+                            type: 'error'
+                        });
+                    }
+
+                });
+            },
             //显示编辑界面
             handleEdit: function () {
                 this.editFormVisible = true;
@@ -235,6 +329,7 @@
                 this.sysUserAuth = user.roleId || '';
                 this.sysUserAvatar = user.avatar || 'https://raw.githubusercontent.com/taylorchen709/markdown-images/master/vueadmin/user.png';
             }
+            this.getUserInfo();
 
         }
     }

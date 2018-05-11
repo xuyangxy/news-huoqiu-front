@@ -50,4 +50,12 @@ export const getSessionUser = params => { return axios.get(`${base}/getSessionUs
 export const getPhoneCode = params => { return axios.get(`${base}/getCode`, { params: params }); };
 
 
+export const getUserList = params => { return axios.get(`${base}/userList`, { params: params }); };
+export const editRole = params => { return axios.get(`${base}/editRole`, { params: params }); };
+
+
+export const userInfo = params => { return axios.get(`${base}/userInfo`, { params: params }); };
+export const editUser = params => { return axios.post(`${base}/editUser`, qs.stringify(params)); };
+
+
 
