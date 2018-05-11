@@ -238,7 +238,7 @@
                 });
             },
             setVal(val){
-                return val ? val + "" : "";
+                return (val && val !== "null") ? val + "" : "";
             }
         },
         mounted() {
@@ -261,6 +261,7 @@
                         data.top = data.top + "";
                         data.checkStatus = data.checkStatus + "";
                         data.newsId = data.id;
+                        data.subtitle = this.setVal(data.subtitle);
                         this.imgList = [{name:'fengmian', url: data.picUrl}];
                         this.form = data;
                         this.$refs.ue.setUEContent(data.content);
