@@ -173,7 +173,8 @@
             },
             putImgParam(formData, param){
                 Object.keys(param).forEach(key => {
-                    formData.append(key, param[key]);
+                    let val = param[key];
+                    formData.append(key, val === 'null' ? '': val);
                 })
             },
             onSubmit() {
@@ -221,6 +222,9 @@
             },
             categoryChange(categoryId, kind) {
                 this.form.kind = '';
+                if (!categoryId) {
+                    return;
+                }
                 getKindList({categoryId: categoryId}).then((res) => {
                     this.kind = res.data;
                     if (kind) {
@@ -232,6 +236,9 @@
                 getModules().then(res => {
                     this.modules = res.data;
                 });
+            },
+            setVal(val){
+                return val ? val + "" : "";
             }
         },
         mounted() {
@@ -247,9 +254,9 @@
                 getNews({id: newsId}).then((res) => {
                     let data = res.data.data;
                     if (data) {
-                        data.kind = data.kindId + "";
-                        data.modules = data.modulesId + "";
-                        data.category = data.categoryId + "";
+                        data.kind = this.setVal(data.kindId);
+                        data.modules = this.setVal(data.modulesId);
+                        data.category = this.setVal(data.categoryId);
                         this.categoryChange(data.categoryId, data.kind);
                         data.top = data.top + "";
                         data.checkStatus = data.checkStatus + "";
