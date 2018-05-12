@@ -92,7 +92,7 @@ let routes = [
         name: '',
         iconCls: 'fa fa-user-circle',
         leaf: true,//只有一个节点
-        auth: 1,
+        auth: -1,
         children: [
             { path: '/userManager', component: UserManager, name: '用户管理'}
         ]
