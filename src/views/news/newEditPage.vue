@@ -155,10 +155,10 @@
                     title: [
                         {required: true, message: '请填写标题', trigger: 'blur'}
                     ],
-                    phone: [
-                        {required: true, message: '请输入联系电话', trigger: 'blur'},
-                        {min: 7, max: 11, message: '长度在 7 到 11 个字符', trigger: 'blur'}
-                    ]
+                    // phone: [
+                    //     {required: true, message: '请输入联系电话', trigger: 'blur'},
+                    //     {min: 7, max: 11, message: '长度在 7 到 11 个字符', trigger: 'blur'}
+                    // ]
                 }
             }
         },

@@ -11,6 +11,7 @@ import NewsAdd from './views/news/newAdd.vue'
 import NewEditPage from './views/news/newEditPage.vue'
 import Regist from './views/news/registPage.vue'
 import UserManager from './views/news/userManager.vue'
+import UserAlternately from './views/news/userAlternately.vue'
 
 let routes = [
     {
@@ -84,6 +85,16 @@ let routes = [
         leaf: true,//只有一个节点
         children: [
             { path: '/newsAdd', component: NewsAdd, name: '新闻投稿'}
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '',
+        iconCls: 'fa fa-users',
+        leaf: true,//只有一个节点
+        children: [
+            { path: '/userAlternately', component: UserAlternately, name: '用户互动'}
         ]
     },
     {

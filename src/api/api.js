@@ -59,3 +59,8 @@ export const editUser = params => { return axios.post(`${base}/editUser`, qs.str
 
 
 
+
+export const feedbackList = params => { return axios.get(`${base}/feedbackList`, { params: params }); };
+export const getFeedbackDetailsById = params => { return axios.get(`${base}/getFeedbackDetailsById`, { params: params }); };
+export const editFeedback = params => { return axios.post(`${base}/editFeedback`, qs.stringify(params)); };
+
