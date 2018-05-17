@@ -183,11 +183,6 @@
 
                 this.$refs.form.validate(valid => {
                     if (valid) {
-                        if (files.length === 0){
-                            this.$message.warning(`请上传封面图片！`);
-                            return;
-                        }
-
                         if (!content || !content.trim()){
                             this.$message.warning(`请输入新闻内容！`);
                             return;
@@ -201,7 +196,9 @@
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             this.formLoading = true;
                             let param = new FormData();
-                            param.append('file', files[0].raw, files[0].name);
+                            if(files[0]) {
+                                param.append('file', files[0].raw, files[0].name);
+                            }
                             param.append('editorValue', content);
                             this.putImgParam(param, this.form);
                             updateNews(param).then((res) => {
@@ -262,7 +259,9 @@
                         data.checkStatus = data.checkStatus + "";
                         data.newsId = data.id;
                         data.subtitle = this.setVal(data.subtitle);
-                        this.imgList = [{name:'fengmian', url: data.picUrl}];
+                        if (data.picUrl) {
+                            this.imgList = [{name:'fengmian', url: data.picUrl}];
+                        }
                         this.form = data;
                         this.$refs.ue.setUEContent(data.content);
                     }

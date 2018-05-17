@@ -35,6 +35,7 @@
                     <el-select v-model="editForm.roleId" placeholder="请选择是否置顶" style="width: 100%">
                         <el-option  label="管理员" value="1"></el-option>
                         <el-option  label="编辑" value="2"></el-option>
+                        <el-option  label="超级管理员" value="-1" disabled></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -90,7 +91,7 @@
                 }
             },
             formatRole(row, column) {
-                return row.roleId == "1" ? '管理员' : '编辑';
+                return row.roleId == "1" ? '管理员' : row.roleId == "-1" ? "超级管理员": '编辑';
             },
             handleCurrentChange(val) {
                 this.page = val;
