@@ -82,7 +82,7 @@
         </el-form-item>
 
 
-        <el-form-item label="审核状态" prop="checkStatus" v-if="form.role === 1">
+        <el-form-item label="审核状态" prop="checkStatus" v-if="form.role <= 1">
             <el-select v-model="form.checkStatus" placeholder="请选择审核状态" style="width: 100%">
                 <el-option label="未审核" value="0"></el-option>
                 <el-option label="是" value="1"></el-option>
