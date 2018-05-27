@@ -1,6 +1,6 @@
 <template>
     <el-row class="container">
-        <el-col :span="24" class="header">
+        <el-col :span="24" class="header hide">
             <el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
                 {{collapsed?'':sysName}}
             </el-col>
@@ -24,7 +24,7 @@
         <el-col :span="24" class="main">
             <aside :class="collapsed?'menu-collapsed':'menu-expanded'">
                 <!--导航菜单-->
-                <el-menu :default-active="$route.path" class="el-menu-vertical-demo" @open="handleopen"
+                <el-menu :default-active="$route.path" class="el-menu-vertical-demo hide" @open="handleopen"
                          @close="handleclose" @select="handleselect"
                          background-color="#545c64"
                          text-color="#fff"
@@ -343,6 +343,10 @@
         min-width: 0;
     }
 
+    .hide{
+        display: none;
+    }
+
     .container {
         position: absolute;
         top: 0px;
@@ -405,7 +409,7 @@
             display: flex;
             // background: #324057;
             position: absolute;
-            top: 60px;
+            top: 0px;
             bottom: 0px;
             overflow: hidden;
             aside {
@@ -438,8 +442,8 @@
                 width: 60px;
             }
             .menu-expanded {
-                flex: 0 0 180px;
-                width: 180px;
+                flex: 0 0 0;
+                width: 0px;
                 .el-menu {
                     width: 100% !important;
                 }
