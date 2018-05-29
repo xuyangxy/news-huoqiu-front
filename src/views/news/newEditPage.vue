@@ -82,7 +82,7 @@
         </el-form-item>
 
 
-        <el-form-item label="审核状态" prop="checkStatus" v-if="form.role <= 1">
+        <el-form-item label="审核状态" prop="checkStatus">
             <el-select v-model="form.checkStatus" placeholder="请选择审核状态" style="width: 100%">
                 <el-option label="未审核" value="0"></el-option>
                 <el-option label="是" value="1"></el-option>
@@ -254,12 +254,13 @@
                         data.kind = this.setVal(data.kindId);
                         data.modules = this.setVal(data.modulesId);
                         data.category = this.setVal(data.categoryId);
+                        data.phone = this.setVal(data.phone);
                         this.categoryChange(data.categoryId, data.kind);
                         data.top = data.top + "";
                         data.checkStatus = data.checkStatus + "";
                         data.newsId = data.id;
                         data.subtitle = this.setVal(data.subtitle);
-                        if (data.picUrl) {
+                        if (data.picUrl && data.picUrl !== 'null') {
                             this.imgList = [{name:'fengmian', url: data.picUrl}];
                         }
                         this.form = data;
