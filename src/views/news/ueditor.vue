@@ -38,11 +38,15 @@
                 return this.editor.getContent()
             },
             setUEContent(msg) {
+                console.log("11");
                 if (this.isLoadSuc){
+                    console.log("22");
                     this.editor.setContent(msg);
                 } else {
+                    console.log("33");
                     this.defaultMsg = msg;
                 }
+                console.log(msg);
             }
         },
         destroyed() {
