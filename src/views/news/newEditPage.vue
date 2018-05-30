@@ -74,7 +74,7 @@
 
 
         <el-form-item label="文章内容">
-            <UE :defaultMsg=defaultMsg :config=config ref="ue"></UE>
+            <UE :config="config" ref="ue"></UE>
         </el-form-item>
 
         <el-form-item label="发稿人姓名" prop="author">
@@ -115,7 +115,6 @@
                 dialogVisible: false,
                 dialogImageUrl: '',
                 formLoading: false,
-                defaultMsg: '',
                 config: {
                     initialFrameWidth: null,
                     initialFrameHeight: 350

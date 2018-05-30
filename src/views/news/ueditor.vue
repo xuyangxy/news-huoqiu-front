@@ -14,13 +14,11 @@
         data() {
             return {
                 editor: null,
-                isLoadSuc : false
+                isLoadSuc : false,
+                defaultMsg : ""
             }
         },
         props: {
-            defaultMsg: {
-                type: String
-            },
             config: {
                 type: Object
             }
@@ -30,8 +28,7 @@
             this.editor = UE.getEditor('UEeditor', this.config); // 初始化UE
             this.editor.addListener("ready", function () {
                 _this.isLoadSuc = true;
-                console.log("44", _this.defaultMsg);
-                _this.editor.setContent(_this.defaultMsg); // 确保UE加载完成后，放入内容。
+                _this.editor.setContent(_this.defaultMsg || ''); // 确保UE加载完成后，放入内容。
             });
         },
         methods: {
@@ -39,15 +36,12 @@
                 return this.editor.getContent()
             },
             setUEContent(msg) {
-                console.log("11");
+                this.defaultMsg = msg;
                 if (this.isLoadSuc){
-                    console.log("22");
                     this.editor.setContent(msg);
                 } else {
-                    console.log("33");
                     this.defaultMsg = msg;
                 }
-                console.log(this.defaultMsg);
             }
         },
         destroyed() {
