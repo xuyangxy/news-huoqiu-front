@@ -50,17 +50,7 @@ router.beforeEach((to, from, next) => {
     } else {
         localStorage.setItem('user', JSON.stringify(localUser));
     }
-    // let user = JSON.parse(localStorage.getItem('user'));
-    //
-    // if (user && user.roleId > 1 && pathAuth.includes(to.path)) {
-    //     next({path: '/'});
-    // } else {
-    //     if (!user && to.path != '/login' && to.path != '/regist') {
-    //         next({path: '/login'})
-    //     } else {
-    //         next()
-    //     }
-    // }
+    next();
 
 
 //  if (to.path != '/login' && to.path != '/regist') {
