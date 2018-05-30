@@ -47,7 +47,7 @@
                     console.log("33");
                     this.defaultMsg = msg;
                 }
-                console.log(msg);
+                console.log(this.defaultMsg);
             }
         },
         destroyed() {
