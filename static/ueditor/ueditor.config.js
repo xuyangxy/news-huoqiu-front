@@ -508,4 +508,5 @@
         getUEBasePath: getUEBasePath
     };
 
+    console.log("timeout update");
 })();
