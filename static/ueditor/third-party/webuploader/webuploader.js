@@ -2951,7 +2951,6 @@
     
         function Transport( opts ) {
             var me = this;
-    
             opts = me.options = $.extend( true, {}, Transport.options, opts || {} );
             RuntimeClient.call( this, 'Transport' );
     
@@ -2973,7 +2972,7 @@
             // 跨域时，是否允许携带cookie, 只有html5 runtime才有效
             withCredentials: false,
             fileVal: 'file',
-            timeout: 2 * 60 * 1000,    // 2分钟
+            timeout: 30 * 60 * 1000,    // 2分钟
             formData: {},
             headers: {},
             sendAsBinary: false
